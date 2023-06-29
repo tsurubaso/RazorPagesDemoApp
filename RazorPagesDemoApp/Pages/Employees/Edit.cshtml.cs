@@ -21,13 +21,6 @@ namespace RazorPagesDemoApp.Pages.Employees
         }
 
 
-
-
-
-
-
-
-
         public void OnGet(Guid id)
         {
             var employee = dbcontext.Employees.Find(id);
@@ -48,7 +41,7 @@ namespace RazorPagesDemoApp.Pages.Employees
 
         }
 
-        public void OnPost()
+        public void OnPostUpdate()
         {
             if (EditEmployeeViewModel != null)
             {
@@ -72,8 +65,29 @@ namespace RazorPagesDemoApp.Pages.Employees
 
             }
 
+            
+
+            ViewData["Message"] = "Employee Updated successfully!";
 
 
+
+        }
+
+
+
+        public IActionResult OnPostDelete()
+        {
+            var existingEmployee = dbcontext.Employees.Find(EditEmployeeViewModel.Id);
+
+            if (existingEmployee!=null)
+            {
+
+                dbcontext.Employees.Remove(existingEmployee);
+                dbcontext.SaveChanges();
+
+                return RedirectToPage("/Employees/List");
+            }
+            return Page();
         }
     }
 }
